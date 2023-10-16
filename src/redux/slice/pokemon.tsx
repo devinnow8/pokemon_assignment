@@ -1,23 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import INITIAL_STATE from "../initialState";
+import { fetchPokemon } from "../asyncThunk/pokemon";
 
-interface CustomData {
-  // Define the structure of your custom data here
-}
-
-const initialState: CustomData = {
-  // Initialize custom data here if needed
-};
-
-const customSlice = createSlice({
-  name: "customData",
-  initialState,
-  reducers: {
-    setCustomData: (state, action) => {
-      return action.payload;
-    },
+const pokemonSlice = createSlice({
+  name: "pokemon",
+  initialState: INITIAL_STATE.POKEMON,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(
+      fetchPokemon.fulfilled,
+      (state, { payload }: PayloadAction<any>) => {
+        state.list.unshift(payload);
+      }
+    );
   },
 });
 
-export const { setCustomData } = customSlice.actions;
-
-export default customSlice.reducer;
+export default pokemonSlice.reducer;

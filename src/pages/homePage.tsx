@@ -47,7 +47,7 @@ function HomePage() {
     setModal(!modal);
     setSelectedModal(data)
   };
-console.log("setSelectedModal", selectedModal);
+console.log("setSelectedModal", );
 
   return (
     <div className="main-container">
@@ -62,23 +62,25 @@ console.log("setSelectedModal", selectedModal);
 
       {list.length ? (
         <div className="content">
-          {list?.map(({ name, sprites, abilities }: { name: string; sprites: any }) => {
+          {list?.map(({ name, sprites, abilities }: { name: string; sprites: any }, index) => {
             let src = Object.values(sprites).find(
               (value: any) => value
             ) as string;
+          console.log("test", index, abilities);
+          
             return (
-              <div>
                 <div className="card" key={src + name} onClick={()=>handleModal(abilities)}>
                   <h3>{name}</h3> <img src={src} alt="pokemon" />
-                  {list[0] && (
+                  <div key={index}>
+                  {index=== 0 && (
                     <div className="image-container">
                       <img src={tag} />
                       <span>New</span>
                     </div>
                   )}
+                  </div>
+                 {modal && (<ModalContainer modal={modal}  setModal={setModal} data={selectedModal}/> )}
                 </div>
-                {modal && (<ModalContainer modal={modal}  setModal={setModal} data={selectedModal}/> )}
-              </div>
             );
           })}
         </div>

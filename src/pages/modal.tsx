@@ -1,9 +1,9 @@
-
 import Modal from "react-modal";
-import React, { useCallback,  } from "react";
+import React, { useCallback } from "react";
 
-import {getURLRequests} from "../api/baseAPI"
-import { useState, useEffect } from 'react';
+import { getURLRequests } from "../api/baseAPI";
+import { useState, useEffect } from "react";
+import "./homePage.css";
 
 function ModalContainer({ modal, data, setModal }) {
   const customStyles = {
@@ -19,67 +19,70 @@ function ModalContainer({ modal, data, setModal }) {
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
       padding: "0px",
-      width: "430px",
+      width: "500px",
       height: "400px",
+      border: '0'
     },
   };
   const [loading, setLoading] = useState(false);
-const [abilitiesData, setAbilitiesData] = useState([]);
+  const [abilitiesData, setAbilitiesData] = useState([]);
   const endpointUrls = [
-    'https://pokeapi.co/api/v2/ability/9/',
-    'https://pokeapi.co/api/v2/ability/31/'
+    "https://pokeapi.co/api/v2/ability/9/",
+    "https://pokeapi.co/api/v2/ability/31/",
   ];
 
-  const fetchData = useCallback(async (endPoints:any) => {
-    try {
-      const responses = await getURLRequests(endPoints);
-      const abilities = responses.map(response => response.data)
-      setAbilitiesData(abilities)
-      setLoading(false)
-      console.log('Abilities:', abilities);
-    } catch (error) {
-      console.error('Error fetching abilities:', error);    
-    }
-  }, [endpointUrls]);
+  const fetchData = useCallback(
+    async (endPoints: any) => {
+      try {
+        const responses = await getURLRequests(endPoints);
+        const abilities = responses.map((response) => response.data);
+        setAbilitiesData(abilities);
+        setLoading(false);
+        console.log("Abilities:", abilities);
+      } catch (error) {
+        console.error("Error fetching abilities:", error);
+      }
+    },
+    [endpointUrls]
+  );
 
   useEffect(() => {
-    
-    const endPoints = data?.map((item: any)=> {
-      return item?.ability.url
-    })
+    const endPoints = data?.map((item: any) => {
+      return item?.ability.url;
+    });
     fetchData(endPoints);
   }, []);
 
- 
-
-
-
-
-  return (
-    loading ? (
-      <div>Loading...</div>
-    ) : (
-      <div>
-        <Modal
-          isOpen={modal}
-          onRequestClose={() => setModal(false)}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <button onClick={() => setModal(false)}>Close</button>
-          {/* <div>{fetchData()}</div> */
-          abilitiesData?.map((dataItem, index)=> {
-            console.log("dataItem",index,  dataItem)
-            return dataItem?.effect_entries?.map((effectData)=> {
-              return (
-                <div>{effectData?.effect || "sdkjfhdjksfdhsf"}</div>
-              )
-            })
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
+    <div>
+      <Modal
+        isOpen={modal}
+        onRequestClose={() => setModal(false)}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <div className="modal-header">
+          <h3>Abilities</h3>
+        <button onClick={() => setModal(false)}>&times;</button>
+        </div>
+        <div className="modal-content">
+        {
+          /* <div>{fetchData()}</div> */
+         
+          abilitiesData?.map((dataItem, index) => {
+            return dataItem?.effect_entries?.map((effectData) => {
+              if(effectData?.language?.name === 'en'){
+                return <p>- {effectData?.short_effect}</p>;
+              }
+            });
           })
-          }
-        </Modal>
-      </div>
-    )
+         
+        }
+        </div>
+      </Modal>
+    </div>
   );
 }
 

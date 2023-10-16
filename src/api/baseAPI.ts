@@ -1,5 +1,5 @@
 import api from "./interceptor";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios,{ AxiosRequestConfig, AxiosResponse } from "axios";
 
 export const getRequest = async <T>(
   endpoint: string,
@@ -10,7 +10,7 @@ export const getRequest = async <T>(
 
 export const postRequest = async <T>(
   endpoint: string,
-  data?: any, 
+  data?: any,
   config?: AxiosRequestConfig
 ): Promise<AxiosResponse<T>> => {
   return await api.post(endpoint, data, config);
@@ -18,7 +18,7 @@ export const postRequest = async <T>(
 
 export const putRequest = async <T>(
   endpoint: string,
-  data?: any, 
+  data?: any,
   config?: AxiosRequestConfig
 ): Promise<AxiosResponse<T>> => {
   return await api.put(endpoint, data, config);
@@ -29,4 +29,13 @@ export const deleteRequest = async <T>(
   config?: AxiosRequestConfig
 ): Promise<AxiosResponse<T>> => {
   return await api.delete(endpoint, config);
+};
+
+export const getURLRequests = async <T>(
+  endpoints: string[],
+  config?: AxiosRequestConfig
+): Promise<AxiosResponse<T>[]> => {
+  const requests = endpoints.map((endpoint) => axios.get(endpoint, config));
+
+  return await Promise.all(requests);
 };

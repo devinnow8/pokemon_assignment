@@ -10,7 +10,9 @@ const pokemonSlice = createSlice({
     builder.addCase(
       fetchPokemon.fulfilled,
       (state, { payload }: PayloadAction<any>) => {
-        state.list.unshift(payload);
+        if(payload?.length > 0){
+          state.list.unshift(payload);
+        }
       }
     );
   },

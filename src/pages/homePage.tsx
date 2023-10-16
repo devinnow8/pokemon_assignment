@@ -10,7 +10,6 @@ function HomePage() {
   const dispatch = useDispatch();
 
   const { list } = pokemonDataSelector(useSelector);
-
   const getAbilitiesRes = () => {
     list?.forEach((data: any) => {
       const abilityUrl = data?.abilities.ability.url;
@@ -41,7 +40,6 @@ function HomePage() {
     setModal(!modal);
     setSelectedModal(data);
   };
-
   return (
     <div className="main-container">
       <div className="header">
@@ -53,11 +51,11 @@ function HomePage() {
         </div>
       </div>
 
-      {list.length ? (
+      {list?.length > 0 ? (
         <div className="content">
           {list?.map(
             (
-              { name, sprites, abilities }: { name: string; sprites: any, abilities: string },
+              { name='', sprites=[], abilities=[] }: { name: string; sprites: any, abilities: any },
               index: number
             ) => {
               let src = Object.values(sprites).find(

@@ -5,7 +5,7 @@ import { getURLRequests } from "../api/baseAPI";
 import { useState, useEffect } from "react";
 import "./homePage.css";
 
-function ModalContainer({ modal, data, setModal }) {
+function ModalContainer({ modal, data, setModal }: any) {
   const customStyles = {
     overlay: {
       zIndex: 15,
@@ -35,10 +35,9 @@ function ModalContainer({ modal, data, setModal }) {
     async (endPoints: any) => {
       try {
         const responses = await getURLRequests(endPoints);
-        const abilities = responses.map((response) => response.data);
+        const abilities: any = responses.map((response) => response.data);
         setAbilitiesData(abilities);
         setLoading(false);
-        console.log("Abilities:", abilities);
       } catch (error) {
         console.error("Error fetching abilities:", error);
       }
@@ -71,8 +70,8 @@ function ModalContainer({ modal, data, setModal }) {
         {
           /* <div>{fetchData()}</div> */
          
-          abilitiesData?.map((dataItem, index) => {
-            return dataItem?.effect_entries?.map((effectData) => {
+          abilitiesData?.map((dataItem:any, index) => {
+            return dataItem?.effect_entries?.map((effectData:any) => {
               if(effectData?.language?.name === 'en'){
                 return <p>- {effectData?.short_effect}</p>;
               }

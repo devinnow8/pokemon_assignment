@@ -11,43 +11,36 @@ function HomePage() {
 
   const { list } = pokemonDataSelector(useSelector);
 
-  console.log("list ===>", list[0]?.abilities[0]?.ability.url);
-
   const getAbilitiesRes = () => {
     list?.forEach((data: any) => {
-      const abilityUrl = data?.abilities.ability.url
-    })
-  }
-  
+      const abilityUrl = data?.abilities.ability.url;
+    });
+  };
 
   const [search, setSearch] = useState("");
   const [modal, setModal] = useState(false);
   const [selectedModal, setSelectedModal] = useState([]);
-
 
   const handleChange = ({
     target: { value },
   }: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(value);
   };
-
+  
   const handlePokemonSearch = useCallback(() => {
-    const existItem = list.some((item: { name: string; sprites: any }) =>
-      item.name.includes(search)
-    );
+    const existItem = list?.find((item: any)=> item?.name?.toLowerCase() ===  search?.toLowerCase())
     if (existItem) {
-      console.log("Pokemon already exists");
+      alert("Pokemon already in the list!");
     } else {
       setSearch("");
       dispatch(fetchPokemon({ queryParam: search.toLowerCase() }) as any);
     }
   }, [search, dispatch]);
 
-  const handleModal = (data:any) => {
+  const handleModal = (data: any) => {
     setModal(!modal);
-    setSelectedModal(data)
+    setSelectedModal(data);
   };
-console.log("setSelectedModal", );
 
   return (
     <div className="main-container">
@@ -62,27 +55,41 @@ console.log("setSelectedModal", );
 
       {list.length ? (
         <div className="content">
-          {list?.map(({ name, sprites, abilities }: { name: string; sprites: any }, index) => {
-            let src = Object.values(sprites).find(
-              (value: any) => value
-            ) as string;
-          console.log("test", index, abilities);
-          
-            return (
-                <div className="card" key={src + name} onClick={()=>handleModal(abilities)}>
+          {list?.map(
+            (
+              { name, sprites, abilities }: { name: string; sprites: any, abilities: string },
+              index: number
+            ) => {
+              let src = Object.values(sprites).find(
+                (value: any) => value
+              ) as string;
+
+              return (
+                <div
+                  className="card"
+                  key={src + name}
+                  onClick={() => handleModal(abilities)}
+                >
                   <h3>{name}</h3> <img src={src} alt="pokemon" />
                   <div key={index}>
-                  {index=== 0 && (
-                    <div className="image-container">
-                      <img src={tag} />
-                      <span>New</span>
-                    </div>
-                  )}
+                    {index === 0 && (
+                      <div className="image-container">
+                        <img src={tag} />
+                        <span>New</span>
+                      </div>
+                    )}
                   </div>
-                 {modal && (<ModalContainer modal={modal}  setModal={setModal} data={selectedModal}/> )}
+                  {modal && (
+                    <ModalContainer
+                      modal={modal}
+                      setModal={setModal}
+                      data={selectedModal}
+                    />
+                  )}
                 </div>
-            );
-          })}
+              );
+            }
+          )}
         </div>
       ) : (
         <div className="no-data">

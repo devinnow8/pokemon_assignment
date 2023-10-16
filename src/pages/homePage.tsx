@@ -6,7 +6,7 @@ import tag from "../assets/images/tag.png";
 import "./homePage.css";
 import ModalContainer from "./modal";
 
-function HomePage() {
+const HomePage = () => {
   const dispatch = useDispatch();
 
   const { list } = pokemonDataSelector(useSelector);

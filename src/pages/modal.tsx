@@ -26,10 +26,6 @@ function ModalContainer({ modal, data, setModal }: any) {
   };
   const [loading, setLoading] = useState(false);
   const [abilitiesData, setAbilitiesData] = useState([]);
-  const endpointUrls = [
-    "https://pokeapi.co/api/v2/ability/9/",
-    "https://pokeapi.co/api/v2/ability/31/",
-  ];
 
   const fetchData = useCallback(
     async (endPoints: any) => {
@@ -42,7 +38,7 @@ function ModalContainer({ modal, data, setModal }: any) {
         console.error("Error fetching abilities:", error);
       }
     },
-    [endpointUrls]
+    []
   );
 
   useEffect(() => {

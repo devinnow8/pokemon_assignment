@@ -56,9 +56,6 @@ function ModalContainer({
       const moves = data.moves.map((move: Move) => move.move.name);
       setMoves(moves);
       setAbilitiesData(abilities);
-      // const responses = await getURLRequests(endPoints);
-      // const abilities: any = responses.map((response) => response.data);
-      // setAbilitiesData(abilities);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching abilities:", error);

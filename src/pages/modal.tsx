@@ -82,11 +82,10 @@ function ModalContainer({ modal, data, setModal }: any) {
 					{abilitiesData.length > 0 && (
 						<div>
 							<h1>ABILITIES</h1>
-
               {abilitiesData?.map((dataItem: Ability, index) => {
                 return (
                   <>
-                    <p> {dataItem.name}</p>{" "}
+                    <ul><li>{dataItem.name}</li> </ul>{" "}
                     {/* <button onClick={() => seeFullDetails(dataItem)}>
                       SEE FULL DETAILS
                     </button> */}
@@ -100,7 +99,7 @@ function ModalContainer({ modal, data, setModal }: any) {
 
             {movesData &&
               movesData?.map((dataItem: string, index) => {
-                return <p>{dataItem}</p>;
+                return <ul><li>{dataItem}</li></ul>;
               })}
           </div>
         </div>

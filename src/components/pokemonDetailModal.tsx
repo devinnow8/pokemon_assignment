@@ -89,7 +89,6 @@ function ModalContainer({
           <button onClick={() => setModal(false)}>&times;</button>
         </div>
         <div className="modal-content">
-          <div>Evolution </div>
           {Object.keys(pokemonInfo).includes("abilitiesData") && (
             <div>
               <h1>ABILITIES</h1>

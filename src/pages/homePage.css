@@ -38,6 +38,22 @@
   font-size: 17px;
 }
 
+.no-result{
+  padding: 7px;
+    text-align: center;
+    width: 30%;
+    margin: 0 auto;
+    margin-top: 8px;
+}
+
+.no-result p{
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: capitalize;
+  margin: 0;
+  color: #f90000;
+}
+
 .content {
   width: 85%;
   margin: 0 auto;

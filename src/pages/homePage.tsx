@@ -4,27 +4,27 @@ import { fetchPokemon } from "../redux/asyncThunk/pokemon";
 import { pokemonDataSelector } from "../redux/selector/pokemon";
 import tag from "../assets/images/tag.png";
 import "./homePage.css";
-import ModalContainer from "./modal";
-import { List, PokemonSprites, PokemonAbilities } from "@/types/list";
+import ModalContainer from "../components/pokemonDetailModal";
+import { List, PokemonSprites, PokemonAbilities } from "@/types/pokemon";
+import { loadingDataSelector } from "../redux/selector/loading";
 
 const HomePage = () => {
   const dispatch = useDispatch();
 
   const { list } = pokemonDataSelector(useSelector);
-
+  const { loading } = loadingDataSelector(useSelector);
   const [search, setSearch] = useState("");
   const [modal, setModal] = useState<boolean>(false);
-  const [selectedPokemon, setSelectedPokemon] = useState<List >();
-  const [selectedFormation, setSelectedFormation] = useState<
-  Record<string, string> | Record<string, Array<Record<string, string>>> | null
->(null);
+  const [isError, setError] = useState<boolean>(false);
+  const [selectedPokemon, setSelectedPokemon] = useState<List>();
+
   const handleChange = ({
     target: { value },
   }: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(value);
   };
 
-  const handlePokemonSearch = useCallback(() => {
+  const handlePokemonSearch = useCallback(async () => {
     const existItem = list?.find(
       (item: List) => item?.name?.toLowerCase() === search?.toLowerCase()
     );
@@ -32,7 +32,15 @@ const HomePage = () => {
       alert("Pokemon already in the list!");
     } else {
       setSearch("");
-      dispatch(fetchPokemon({ queryParam: search.toLowerCase() }) as any);
+      const result = await dispatch(
+        fetchPokemon({ queryParam: search.toLowerCase() }) as any
+      );
+      console.log("resultresult", result);
+      if (!result.payload) {
+        setError(true);
+      } else {
+        setError(false);
+      }
     }
   }, [search, dispatch]);
 
@@ -40,15 +48,25 @@ const HomePage = () => {
     setModal(!modal);
     setSelectedPokemon(data);
   };
+
   return (
     <div className="main-container">
       <div className="header">
         <div className="header-content">
-          <input value={search} onChange={handleChange} placeholder="Search" />
+          <input
+            value={search}
+            onChange={handleChange}
+            placeholder={loading ? "Loading..." : "Search"}
+          />
           <button onClick={handlePokemonSearch} disabled={!search}>
             Search
           </button>
         </div>
+        {isError && (
+          <div className="no-result">
+            <p>Sorry, no results found! </p>
+          </div>
+        )}{" "}
       </div>
 
       {list?.length > 0 ? (
@@ -85,13 +103,15 @@ const HomePage = () => {
                       </div>
                     )}
                   </div>
-                  {selectedPokemon && Object.values(selectedPokemon).length && modal && (
-                    <ModalContainer
-                      modal={modal}
-                      setModal={setModal}
-                      data={selectedPokemon}
-                    />
-                  )}
+                  {selectedPokemon &&
+                    Object.values(selectedPokemon).length &&
+                    modal && (
+                      <ModalContainer
+                        modal={modal}
+                        setModal={setModal}
+                        data={selectedPokemon}
+                      />
+                    )}
                 </div>
               );
             }

@@ -1,10 +1,10 @@
+import { List } from "@/types/pokemon";
 interface InitialType {
   LOADING: {
     loading: number;
   };
   POKEMON: {
-    list: any[];
-    error?: any;
+    list: List[];
   };
 }
 
@@ -14,7 +14,6 @@ const initialState: InitialType = {
   },
   POKEMON: {
     list: [],
-    error: undefined,
   },
 };
 

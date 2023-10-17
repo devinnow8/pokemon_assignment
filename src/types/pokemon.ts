@@ -44,7 +44,7 @@ export interface Move {
 }
 
 type MovesList = Move[];
-type SpeciesList = PokemonSpecies[];
+type SpeciesList = PokemonSpecies;
 
 interface MoveLearnMethod {
   name: string;

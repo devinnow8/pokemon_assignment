@@ -5,7 +5,9 @@ import { fetchPokemon } from "../asyncThunk/pokemon";
 const pokemonSlice = createSlice({
   name: "pokemon",
   initialState: INITIAL_STATE.POKEMON,
-  reducers: {},
+  reducers: {
+
+  },
   extraReducers: (builder) => {
     builder.addCase(
       fetchPokemon.fulfilled,
@@ -16,6 +18,7 @@ const pokemonSlice = createSlice({
         }
         if(payload){
           state.list.unshift(payload);
+        } else {
         }
       }
     );

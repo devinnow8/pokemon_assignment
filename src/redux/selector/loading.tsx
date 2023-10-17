@@ -1,3 +1,5 @@
+import { RootState } from "../store";
+
 export const loadingDataSelector = (func: any) => {
-  return func((state: any) => state.loadingReducer);
+  return func((state: RootState) => state.loadingReducer);
 };

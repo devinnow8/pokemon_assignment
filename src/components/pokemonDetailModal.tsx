@@ -85,7 +85,7 @@ function ModalContainer({
         contentLabel="Example Modal"
       >
         <div className="modal-header">
-          <h3>Details</h3>
+          <h3>{data.name.toUpperCase()} </h3>
           <button onClick={() => setModal(false)}>&times;</button>
         </div>
         <div className="modal-content">
@@ -99,9 +99,9 @@ function ModalContainer({
                     <ul>
                       <li>{dataItem.name}</li>{" "}
                     </ul>{" "}
-                    {/* <button onClick={() => seeFullDetails(dataItem)}>
+                     {/* <button onClick={() => seeFullDetails(dataItem)}>
                       SEE FULL DETAILS
-                    </button> */}
+                    </button>  */}
                   </>
                 );
               })}

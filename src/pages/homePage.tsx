@@ -13,7 +13,7 @@ const HomePage = () => {
   const { list } = pokemonDataSelector(useSelector);
 
   const [search, setSearch] = useState("");
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState<boolean>(false);
   const [selectedModal, setSelectedModal] = useState<List>();
 
   const handleChange = ({

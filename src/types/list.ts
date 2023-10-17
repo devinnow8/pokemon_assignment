@@ -1,3 +1,6 @@
+export interface ChildComponentProps {
+    setState: React.Dispatch<React.SetStateAction<boolean>>;
+}
 export interface Ability {
   name: string;
   url: string;

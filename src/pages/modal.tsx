@@ -32,6 +32,7 @@ function ModalContainer({
       width: "500px",
       height: "400px",
       border: "0",
+      overflow: "hidden",
     },
   };
   const navigate = useNavigate();

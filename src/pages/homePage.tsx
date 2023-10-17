@@ -66,7 +66,7 @@ const HomePage = () => {
                 <div
                   className="card"
                   key={src + name}
-                  onClick={() => handleModal(abilities)}
+                  onClick={() => handleModal(list[index])}
                 >
                   <h3>{name}</h3> <img src={src} alt="pokemon" />
                   <div key={index}>

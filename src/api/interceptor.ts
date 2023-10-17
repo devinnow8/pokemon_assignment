@@ -4,7 +4,8 @@ import axios, {
   AxiosResponse,
 } from "axios";
 
-const { REACT_APP_BASE_URL } = process.env;
+const  REACT_APP_BASE_URL  = "https://pokeapi.co/api/v2";
+console.log("REACT_APP_BASE_URL",REACT_APP_BASE_URL)
 
 
 const api: AxiosInstance = axios.create({

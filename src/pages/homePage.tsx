@@ -11,11 +11,6 @@ const HomePage = () => {
   const dispatch = useDispatch();
 
   const { list } = pokemonDataSelector(useSelector);
-  // const getAbilitiesRes = () => {
-  //   list?.forEach((data: any) => {
-  //     const abilityUrl = data?.abilities.ability.url;
-  //   });
-  // };
 
   const [search, setSearch] = useState("");
   const [modal, setModal] = useState(false);

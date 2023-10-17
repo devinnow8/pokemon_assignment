@@ -14,8 +14,10 @@ const HomePage = () => {
 
   const [search, setSearch] = useState("");
   const [modal, setModal] = useState<boolean>(false);
-  const [selectedModal, setSelectedModal] = useState<List>();
-
+  const [selectedPokemon, setSelectedPokemon] = useState<List >();
+  const [selectedFormation, setSelectedFormation] = useState<
+  Record<string, string> | Record<string, Array<Record<string, string>>> | null
+>(null);
   const handleChange = ({
     target: { value },
   }: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +38,7 @@ const HomePage = () => {
 
   const handleModal = (data: List) => {
     setModal(!modal);
-    setSelectedModal(data);
+    setSelectedPokemon(data);
   };
   return (
     <div className="main-container">
@@ -83,11 +85,11 @@ const HomePage = () => {
                       </div>
                     )}
                   </div>
-                  {modal && (
+                  {selectedPokemon && Object.values(selectedPokemon).length && modal && (
                     <ModalContainer
                       modal={modal}
                       setModal={setModal}
-                      data={selectedModal}
+                      data={selectedPokemon}
                     />
                   )}
                 </div>

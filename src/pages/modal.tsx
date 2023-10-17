@@ -14,7 +14,7 @@ function ModalContainer({
 }: {
   modal: boolean;
   data: List;
-  setModal: ChildComponentProps
+  setModal: React.Dispatch<React.SetStateAction<boolean>>
 }) {
   const customStyles = {
     overlay: {
@@ -37,11 +37,10 @@ function ModalContainer({
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const [abilitiesData, setAbilitiesData] = useState([]);
-  const [movesData, setMoves] = useState([]);
+  const [abilitiesData, setAbilitiesData] = useState<Ability[]>([]);
+  const [movesData, setMoves] = useState<string[]>([]);
 
   // const seeFullDetails = async (item: any) => {
-  //   console.log("seeFullDetails", item);
   //   const endPoints = item.url;
   //   const mainUrl = endPoints.replace(/\/$/, "");
   //   const abilityId = mainUrl.substring(mainUrl.lastIndexOf("/") + 1);
@@ -51,7 +50,6 @@ function ModalContainer({
 
   const fetchData = useCallback(async () => {
     try {
-      console.log("daaata", data);
       const abilities = data.abilities.map(
         (value: PokemonAbility) => value.ability
       );
@@ -70,31 +68,29 @@ function ModalContainer({
   useEffect(() => {
     fetchData();
   }, []);
-  console.log("abilitiesData", movesData, abilitiesData);
 
-  return loading ? (
-    <div>Loading...</div>
-  ) : (
-    <div>
-      <Modal
-        isOpen={modal}
-        onRequestClose={() => setModal(false)}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <div className="modal-header">
-          <h3>Details</h3>
-          <button onClick={() => setModal(false)}>&times;</button>
-        </div>
-        <div className="modal-content">
-          {abilitiesData.length  && (
-            <div>
-              <h1>ABILITIES</h1>
-
+	return loading ? (
+		<div>Loading...</div>
+	) : (
+		<div>
+			<Modal
+				isOpen={modal}
+				onRequestClose={() => setModal(false)}
+				style={customStyles}
+				contentLabel="Example Modal"
+			>
+				<div className="modal-header">
+					<h3>Details</h3>
+					<button onClick={() => setModal(false)}>&times;</button>
+				</div>
+				<div className="modal-content">
+					{abilitiesData.length > 0 && (
+						<div>
+							<h1>ABILITIES</h1>
               {abilitiesData?.map((dataItem: Ability, index) => {
                 return (
                   <>
-                    <p> {dataItem.name}</p>{" "}
+                    <ul><li>{dataItem.name}</li> </ul>{" "}
                     {/* <button onClick={() => seeFullDetails(dataItem)}>
                       SEE FULL DETAILS
                     </button> */}
@@ -107,7 +103,7 @@ function ModalContainer({
             <h1>MOVES</h1>
             {
               movesData?.map((dataItem: string, index) => {
-                return <p>{dataItem}</p>;
+                return <ul><li>{dataItem}</li></ul>;
               })}
           </div>}
         </div>

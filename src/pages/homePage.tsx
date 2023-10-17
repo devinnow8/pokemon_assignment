@@ -5,29 +5,32 @@ import { pokemonDataSelector } from "../redux/selector/pokemon";
 import tag from "../assets/images/tag.png";
 import "./homePage.css";
 import ModalContainer from "./modal";
+import { List, PokemonSprites, PokemonAbilities } from "@/types/list";
 
 const HomePage = () => {
   const dispatch = useDispatch();
 
   const { list } = pokemonDataSelector(useSelector);
-  const getAbilitiesRes = () => {
-    list?.forEach((data: any) => {
-      const abilityUrl = data?.abilities.ability.url;
-    });
-  };
+  // const getAbilitiesRes = () => {
+  //   list?.forEach((data: any) => {
+  //     const abilityUrl = data?.abilities.ability.url;
+  //   });
+  // };
 
   const [search, setSearch] = useState("");
   const [modal, setModal] = useState(false);
-  const [selectedModal, setSelectedModal] = useState([]);
+  const [selectedModal, setSelectedModal] = useState<List>();
 
   const handleChange = ({
     target: { value },
   }: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(value);
   };
-  
+
   const handlePokemonSearch = useCallback(() => {
-    const existItem = list?.find((item: any)=> item?.name?.toLowerCase() ===  search?.toLowerCase())
+    const existItem = list?.find(
+      (item: List) => item?.name?.toLowerCase() === search?.toLowerCase()
+    );
     if (existItem) {
       alert("Pokemon already in the list!");
     } else {
@@ -36,7 +39,7 @@ const HomePage = () => {
     }
   }, [search, dispatch]);
 
-  const handleModal = (data: any) => {
+  const handleModal = (data: List) => {
     setModal(!modal);
     setSelectedModal(data);
   };
@@ -55,11 +58,19 @@ const HomePage = () => {
         <div className="content">
           {list?.map(
             (
-              { name='', sprites=[], abilities=[] }: { name: string; sprites: any, abilities: any },
+              {
+                name = "",
+                sprites,
+                abilities,
+              }: {
+                name: string;
+                sprites: PokemonSprites;
+                abilities: PokemonAbilities;
+              },
               index: number
             ) => {
               let src = Object.values(sprites).find(
-                (value: any) => value
+                (value: PokemonSprites) => value
               ) as string;
 
               return (
@@ -96,6 +107,6 @@ const HomePage = () => {
       )}
     </div>
   );
-}
+};
 
 export default HomePage;

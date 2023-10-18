@@ -207,11 +207,21 @@
 			margin-bottom: 18px;
 		}
 		ul {
-			padding-left: 23px;
+      padding-left: 2px;
+      display: flex;
+      list-style: none;
+      flex-wrap: wrap;
 			li {
-				color: #535353;
-				font-size: 16px;
-				margin-bottom: 19px;
+        margin-bottom: 19px;
+        background-color: #989898;
+        border-radius: 5px;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        flex-wrap: wrap;
+        margin-right: 14px;
+        color: white;
+        font-weight: 400;
+        border-radius: 0.25rem;
 			}
 		}
 	}

@@ -7,6 +7,7 @@ import "./homePage.css";
 import ModalContainer from "../components/pokemonDetailModal";
 import { List, PokemonSprites, PokemonAbilities } from "@/types/pokemon";
 import { loadingDataSelector } from "../redux/selector/loading";
+import EvolutionsModal from "../components/evolutionsModal";
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,8 @@ const HomePage = () => {
   const { list } = pokemonDataSelector(useSelector);
   const { loading } = loadingDataSelector(useSelector);
   const [search, setSearch] = useState("");
+  const [evolutionModal, setEvolutionModal] = useState<boolean>(false);
+
   const [modal, setModal] = useState<boolean>(false);
   const [isError, setError] = useState<boolean>(false);
   const [selectedPokemon, setSelectedPokemon] = useState<List>();
@@ -35,7 +38,6 @@ const HomePage = () => {
       const result = await dispatch(
         fetchPokemon({ queryParam: search.toLowerCase() }) as any
       );
-      console.log("resultresult", result);
       if (!result.payload) {
         setError(true);
       } else {
@@ -47,6 +49,11 @@ const HomePage = () => {
   const handleModal = (data: List) => {
     setModal(!modal);
     setSelectedPokemon(data);
+  };
+
+  const setEvolutionModalState = (value:boolean) => {
+    console.log("onEvolutionCheck");
+    setEvolutionModal(value);
   };
 
   return (
@@ -103,14 +110,25 @@ const HomePage = () => {
                       </div>
                     )}
                   </div>
+                  <div>
+                    {" "}
+                    <button onClick={() => setEvolutionModalState(true)}>
+                      Evolutions{" "}
+                    </button>
+                  </div>
                   {selectedPokemon &&
                     Object.values(selectedPokemon).length &&
                     modal && (
-                      <ModalContainer
-                        modal={modal}
-                        setModal={setModal}
-                        data={selectedPokemon}
-                      />
+                      <>
+                        <ModalContainer
+                          modal={modal}
+                          setModal={setModal}
+                          data={selectedPokemon}
+                        />
+                        {evolutionModal && (
+                          <EvolutionsModal selectedPokemon={selectedPokemon} setEvolutionModal = {setEvolutionModalState}/>
+                        )}
+                      </>
                     )}
                 </div>
               );

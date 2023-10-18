@@ -7,6 +7,10 @@ export interface FetchPokemonArgs {
   queryParam: string;
 }
 
+export interface FetchPokemonEvolutionArgs {
+  id:  number;
+}
+
 export const fetchPokemon = createAsyncThunk(
   "pokemon/fetchPokemon",
   async ({ queryParam }: FetchPokemonArgs, { dispatch }) => {
@@ -25,3 +29,23 @@ export const fetchPokemon = createAsyncThunk(
     }
   }
 );
+
+export const fetchPokemonEvolution = createAsyncThunk(
+  "pokemon/fetchPokemonEvolution",
+  async (payload: FetchPokemonEvolutionArgs, { dispatch }) => {
+
+
+    try {
+      dispatch(beginAPICall());
+
+      const { data } = await getRequest(`https://pokeapi.co/api/v2/evolution-chain/${payload}` );
+      return data;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      dispatch(endAPICall());
+    }
+  }
+);
+
+

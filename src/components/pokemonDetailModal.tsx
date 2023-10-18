@@ -1,7 +1,7 @@
 import Modal from "react-modal";
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-
+import customStyles from '../common/modalStyles.js'
 import { getURLRequests } from "../api/baseAPI";
 import { useState, useEffect } from "react";
 import "../pages/homePage.css";
@@ -27,24 +27,7 @@ function ModalContainer({
   data: List;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const customStyles = {
-    overlay: {
-      zIndex: 15,
-      background: "rgba(0, 0, 0, 0.7)",
-    },
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      padding: "0px",
-      width: "500px",
-      height: "400px",
-      border: "0",
-    },
-  };
+
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -89,6 +72,7 @@ function ModalContainer({
           <button onClick={() => setModal(false)}>&times;</button>
         </div>
         <div className="modal-content">
+          <div>Evolution </div>
           {Object.keys(pokemonInfo).includes("abilitiesData") && (
             <div>
               <h1>ABILITIES</h1>

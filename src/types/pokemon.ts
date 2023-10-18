@@ -218,4 +218,5 @@ export interface List {
   stats: PokemonStats;
   types: PokemonTypes;
   weight: number;
+  evolutionData?:any
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchPokemonEvolution } from "../redux/asyncThunk/pokemon";
 import { useDispatch } from "react-redux";
 import customStyles from "../common/modalStyles";
+import arrowImg from '../assets/images/right-arrow.png';
 import Modal from "react-modal";
 
 const EvolutionsModal = (params) => {
@@ -70,6 +71,21 @@ const EvolutionsModal = (params) => {
       <div className="modal-header">
         <h3>Evolutions </h3>
         <button onClick={() => setEvolutionModal(false)}>&times;</button>
+      </div>
+      <div className="evolution-modal">
+        <div className="evolution-modal-content">
+          <h4>ABC</h4>
+          <img src={arrowImg} />
+        </div>
+        <div className="evolution-modal-content">
+          <h4>ABC</h4>
+          <img src={arrowImg} />
+        </div>
+        <div className="evolution-modal-content">
+          <h4>ABC</h4>
+          <img src={arrowImg} />
+        </div>
+
       </div>
     </Modal>
   );

@@ -73,6 +73,14 @@ function ModalContainer({
 				</div>
 				<div className="abilities-modal">
 					<div className="abilities-modal-content">
+						{pokemonInfo?.species && (
+							<>
+								<div className='special-species'>
+									<h1>SPECIES :</h1>
+									<span>{pokemonInfo.species}</span>
+								</div>
+							</>
+						)}
 						{Object.keys(pokemonInfo).includes('abilitiesData') && (
 							<div>
 								<h1>ABILITIES</h1>
@@ -97,18 +105,10 @@ function ModalContainer({
 								<h1>MOVES</h1>
 								<ul>
 									{pokemonInfo.movesData?.map((dataItem: string, index) => {
-										return <li>{dataItem}</li>;
+										return <li key={index}>{dataItem}</li>;
 									})}
 								</ul>
 							</div>
-						)}
-						{pokemonInfo?.species && (
-							<>
-								<h1>SPECIES</h1>
-								<ul>
-									<li>{pokemonInfo.species}</li>
-								</ul>
-							</>
 						)}
 					</div>
 				</div>

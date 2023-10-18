@@ -46,15 +46,14 @@ const HomePage = () => {
 		}
 	}, [search, dispatch]);
 
-	const handleModal = (data: List) => {
-		setModal(!modal);
-		setSelectedPokemon(data);
-	};
+  const handleModal = (data: List) => {
+    setModal(!modal);
+    setSelectedPokemon(data);
+  };
 
-	const setEvolutionModalState = (value: boolean) => {
-		console.log('onEvolutionCheck');
-		setEvolutionModal(value);
-	};
+  const setEvolutionModalState = (value: boolean) => {
+    setEvolutionModal(value);
+  };
 
 	return (
 		<div className="main-container">

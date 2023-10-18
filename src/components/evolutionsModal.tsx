@@ -19,7 +19,6 @@ interface Species {
 }
 
 const EvolutionsModal = (params: EvolutionProps) => {
-  console.log("EvolutionsModal");
   const {
     setEvolutionModal,
     evolutionModal,
@@ -27,6 +26,8 @@ const EvolutionsModal = (params: EvolutionProps) => {
     selectedPokemon,
   } = params;
   const [evolutions, setEvolutions] = useState<string[]>([]);
+  const [apiResult, setApiResult] = useState<boolean>(false);
+
   const dispatch = useDispatch();
 
   const getEvolutionValues = (evolutionChainArr: Species[]) => {
@@ -40,12 +41,18 @@ const EvolutionsModal = (params: EvolutionProps) => {
   const fetchEvolutions = async () => {
     // @ts-ignore:next-line
     const result = await dispatch(fetchPokemonEvolution(selectedPokemon.id));
-    const chain = await findEvolutionChain(result.payload);
-
     let evolutionsData = [] as any;
-    if (chain.length) {
-      evolutionsData = await getEvolutionValues(chain);
+
+    if (result) {
+      setApiResult(true);
+      if (result?.payload) {
+        const chain = await findEvolutionChain(result.payload);
+        if (chain.length) {
+          evolutionsData = await getEvolutionValues(chain);
+        }
+      }
     }
+
     setEvolutions(evolutionsData);
   };
   useEffect(() => {
@@ -76,19 +83,17 @@ const EvolutionsModal = (params: EvolutionProps) => {
       }
     }
 
-    console.log("evooo", evolutionChain);
     return evolutionChain;
   };
 
   const onPokemonEvoClick = (evolution: string) => {
-    console.log("onPokemonEvoClick", evolution);
     onEvolutionClick(evolution);
   };
 
   return (
     <Modal
       isOpen={evolutionModal}
-      onRequestClose={(e) => setEvolutionModal(e,false)}
+      onRequestClose={(e) => setEvolutionModal(e, false)}
       style={customStyles}
       contentLabel="Example Modal"
       ariaHideApp={false}
@@ -114,7 +119,7 @@ const EvolutionsModal = (params: EvolutionProps) => {
             );
           })
         ) : (
-          <>Loading...</>
+          <>{!apiResult ? <>Loading...</> : <>No chain found</>}</>
         )}
       </div>
     </Modal>

@@ -40,6 +40,10 @@ const HomePage = React.memo((props) => {
       );
       if (!result.payload) {
         setError(true);
+        setTimeout(()=>{
+          setError(false);
+
+        },2000)
       } else {
         setError(false);
       }

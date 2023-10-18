@@ -33,14 +33,15 @@ const HomePage = React.memo((props) => {
     setEvolutionModal(false);
   };
 
-  const handlePokemonSearch = useCallback(
-    async (pokemonName?: string) => {
-      let pokemonToSearch = search && search.length > 0 ? search : pokemonName;
+  const handlePokemonSearch = async(pokemonName: string) => {
+    // async (pokemonName?: string) => {
+      let pokemonToSearch = pokemonName ? pokemonName : search;
 
       const existItem = list?.find(
         (item: List) =>
           item?.name?.toLowerCase() === pokemonToSearch?.toLowerCase()
       );
+      console.log("existItemexistItem",list,pokemonToSearch,existItem)
       if (existItem) {
         alert(`This Pokemon ${pokemonToSearch} is already in the list!`);
       } else {
@@ -59,12 +60,11 @@ const HomePage = React.memo((props) => {
           }
         }
       }
-    },
-    [search, dispatch]
-  );
+    }
+    // [search, dispatch]
+
 
   const handleModal = (data: List) => {
-    console.log("hare callll");
     setModal(!modal);
     setSelectedPokemon(data);
   };
@@ -72,7 +72,6 @@ const HomePage = React.memo((props) => {
   const setEvolutionModalState = useCallback(
     (e: any, value: boolean, data: List) => {
       e.stopPropagation();
-      console.log(value, "setEvolutionModalState");
       setSelectedPokemon(data);
       setModal(false);
       setEvolutionModal(value);
@@ -80,7 +79,6 @@ const HomePage = React.memo((props) => {
     []
   );
 
-  console.log("modalmodal", evolutionModal, modal);
 
   const renderCard = (index: any) => {
     let source = "";
@@ -123,7 +121,7 @@ const HomePage = React.memo((props) => {
             onChange={(e) => handleChange(e)}
             placeholder={loading ? "Loading..." : "Search"}
           />
-          <button onClick={() => handlePokemonSearch()} disabled={!search}>
+          <button onClick={() => handlePokemonSearch(search)} disabled={!search}>
             Search
           </button>
         </div>
@@ -163,7 +161,6 @@ const HomePage = React.memo((props) => {
                     let src = Object.values(sprites).find(
                       (value: PokemonSprites) => value
                     ) as string;
-                    console.log("srcsrc", src);
 
                     return <>{index !== 0 && renderCard(index)}</>;
                   }

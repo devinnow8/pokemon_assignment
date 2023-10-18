@@ -145,6 +145,7 @@ const HomePage = React.memo((props) => {
 						<div className="recently-viewed">{renderCard(0)}</div>
 					)}
 					<div className="other-cards">
+          <h2>Searched history</h2>
 						{list?.length > 1 && (
 							<>
 								{list?.map(

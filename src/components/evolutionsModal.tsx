@@ -10,6 +10,7 @@ interface EvolutionProps {
   setEvolutionModal: any;
   selectedPokemon: List;
   evolutionModal: boolean;
+  onEvolutionClick: any;
 }
 
 interface Species {
@@ -19,7 +20,12 @@ interface Species {
 
 const EvolutionsModal = (params: EvolutionProps) => {
   console.log("EvolutionsModal");
-  const { setEvolutionModal, evolutionModal, selectedPokemon } = params;
+  const {
+    setEvolutionModal,
+    evolutionModal,
+    onEvolutionClick,
+    selectedPokemon,
+  } = params;
   const [evolutions, setEvolutions] = useState<string[]>([]);
   const dispatch = useDispatch();
 
@@ -74,24 +80,35 @@ const EvolutionsModal = (params: EvolutionProps) => {
     return evolutionChain;
   };
 
+  const onPokemonEvoClick = (evolution: string) => {
+    console.log("onPokemonEvoClick", evolution);
+    onEvolutionClick(evolution);
+  };
+
   return (
     <Modal
       isOpen={evolutionModal}
-      onRequestClose={() => setEvolutionModal(false)}
+      onRequestClose={(e) => setEvolutionModal(e,false)}
       style={customStyles}
       contentLabel="Example Modal"
       ariaHideApp={false}
     >
       <div className="modal-header">
         <h3>{selectedPokemon.name.toUpperCase()} EVOLUTIONS </h3>
-        <button onClick={() => setEvolutionModal(false)}>&times;</button>
+        <button onClick={(e) => setEvolutionModal(e, false)}>&times;</button>
       </div>
       <div className="evolution-modal">
         {evolutions.length ? (
           evolutions.map((evolution, index) => {
             return (
               <div key={index} className="evolution-modal-content">
-                <h4>{evolution.toUpperCase()}</h4>
+                <h4
+                  onClick={() => {
+                    onPokemonEvoClick(evolution);
+                  }}
+                >
+                  {evolution.toUpperCase()}
+                </h4>
                 {index + 1 !== evolutions.length && <img src={arrowImg} />}
               </div>
             );

@@ -27,42 +27,61 @@ const HomePage = React.memo((props) => {
     setSearch(value);
   };
 
-  const handlePokemonSearch = useCallback(async () => {
-    const existItem = list?.find(
-      (item: List) => item?.name?.toLowerCase() === search?.toLowerCase()
-    );
-    if (existItem) {
-      alert("Pokemon already in the list!");
-    } else {
-      setSearch("");
-      const result = await dispatch(
-        fetchPokemon({ queryParam: search.toLowerCase() }) as any
-      );
-      if (!result.payload) {
-        setError(true);
-        setTimeout(()=>{
-          setError(false);
+  const onEvolutionClick = (pokemonName: string) => {
+    setSearch(pokemonName);
+    handlePokemonSearch(pokemonName);
+    setEvolutionModal(false);
+  };
 
-        },2000)
+  const handlePokemonSearch = useCallback(
+    async (pokemonName?: string) => {
+      let pokemonToSearch = search && search.length > 0 ? search : pokemonName;
+      console.log("pokemonToSearch", pokemonToSearch);
+
+      const existItem = list?.find(
+        (item: List) =>
+          item?.name?.toLowerCase() === pokemonToSearch?.toLowerCase()
+      );
+      if (existItem) {
+        alert("Pokemon already in the list!");
       } else {
-        setError(false);
+        setSearch("");
+        if (pokemonToSearch) {
+          const result = await dispatch(
+            fetchPokemon({ queryParam: pokemonToSearch.toLowerCase() }) as any
+          );
+          if (!result.payload) {
+            setError(true);
+            setTimeout(() => {
+              setError(false);
+            }, 2000);
+          } else {
+            setError(false);
+          }
+        }
       }
-    }
-  }, [search, dispatch]);
+    },
+    [search, dispatch]
+  );
 
   const handleModal = (data: List) => {
     console.log("hare callll");
-
     setModal(!modal);
     setSelectedPokemon(data);
   };
 
-  const setEvolutionModalState = useCallback((value: boolean, data: List) => {
-    console.log(value, "setEvolutionModalState");
-    setSelectedPokemon(data);
+  const setEvolutionModalState = useCallback(
+    (e: any, value: boolean, data: List) => {
+      e.stopPropagation();
+      console.log(value, "setEvolutionModalState");
+      setSelectedPokemon(data);
+      setModal(false);
+      setEvolutionModal(value);
+    },
+    []
+  );
 
-    setEvolutionModal(value);
-  }, []);
+  console.log("modalmodal", evolutionModal, modal);
 
   return (
     <div className="main-container">
@@ -120,7 +139,9 @@ const HomePage = React.memo((props) => {
                   </div>
                   <button
                     className="evolution-btn"
-                    onClick={() => setEvolutionModalState(true, list[index])}
+                    onClick={(e) =>
+                      setEvolutionModalState(e, true, list[index])
+                    }
                   >
                     Evolutions{" "}
                   </button>
@@ -146,6 +167,7 @@ const HomePage = React.memo((props) => {
                 evolutionModal={evolutionModal}
                 selectedPokemon={selectedPokemon}
                 setEvolutionModal={setEvolutionModalState}
+                onEvolutionClick={onEvolutionClick}
               />
             )}
         </div>

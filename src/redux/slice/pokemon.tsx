@@ -22,7 +22,6 @@ const pokemonSlice = createSlice({
         }
       }
     ).addCase(fetchPokemonEvolution.fulfilled, (state, { payload }: PayloadAction<any>) => {
-     console.log("payloadpayload",payload)
       // if (payload && payload.evolutionData && typeof indexToInsert === 'number') {
         // Ensure that the specified index is within the bounds of the list array
         // if (indexToInsert >= 0 && indexToInsert < state.list.length) {

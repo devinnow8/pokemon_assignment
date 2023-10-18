@@ -1,5 +1,5 @@
 export interface ChildComponentProps {
-    setState: React.Dispatch<React.SetStateAction<boolean>>;
+  setState: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface Ability {
   name: string;
@@ -218,5 +218,45 @@ export interface List {
   stats: PokemonStats;
   types: PokemonTypes;
   weight: number;
-  evolutionData?:any
+  evolutionData?: any;
+}
+
+// POKEMON EVOLUTION
+interface Item {
+  name: string;
+  url: string;
+}
+
+interface EvolutionDetails {
+  gender: null;
+  held_item: null;
+  item: Item;
+  known_move: null;
+  known_move_type: null;
+  location: null;
+  min_affection: null;
+  min_beauty: null;
+  min_happiness: null;
+  min_level: null;
+  needs_overworld_rain: boolean;
+  party_species: null;
+  party_type: null;
+  relative_physical_stats: null;
+  time_of_day: string;
+  trade_species: null;
+  trigger: Item;
+  turn_upside_down: boolean;
+}
+
+interface EvolutionChain {
+  evolution_details: EvolutionDetails[];
+  evolves_to: EvolutionChain[];
+  is_baby: boolean;
+  species: Item;
+}
+
+export interface Evolution {
+  baby_trigger_item: null;
+  chain: EvolutionChain;
+  id: number;
 }

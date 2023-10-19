@@ -6,8 +6,8 @@ import EvolutionsModal from "./evolutionsModal";
 
 interface ContentProps {
   list: List[];
-  setSearch: any;
-  handlePokemonSearch: any;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+  handlePokemonSearch: React.Dispatch<React.SetStateAction<any>>;
 }
 
 function Content(props: ContentProps) {
@@ -69,7 +69,7 @@ function Content(props: ContentProps) {
     <>
       {!list.length ? (
         <div className="no-data">
-          <h2> No Data</h2>
+          <h2>View Pokemons by searching</h2>
         </div>
       ) : (
         <div className="content">

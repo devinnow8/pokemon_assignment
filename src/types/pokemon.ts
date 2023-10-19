@@ -187,12 +187,12 @@ interface PokemonStat {
 type PokemonStats = PokemonStat[];
 
 //types
-interface Type {
+export interface Type {
   name: string;
   url: string;
 }
 
-interface PokemonType {
+export interface PokemonType {
   slot: number;
   type: Type;
 }

@@ -11,11 +11,13 @@ import {
 	PokemonAbility,
 	Move,
 	List,
+	PokemonType
 } from '@/types/pokemon';
 interface PokemonInfo {
 	abilitiesData: Ability[];
 	movesData: string[];
 	species: string;
+	typeData:string[];
 }
 
 function ModalContainer({
@@ -40,10 +42,13 @@ function ModalContainer({
 				(value: PokemonAbility) => value.ability
 			);
 			const moves = data.moves.map((move: Move) => move.move.name);
+			
+			const types = data.types.map((typeElement: PokemonType) => typeElement.type.name);
 			const pokemonInfo = {
 				abilitiesData: abilities,
 				movesData: moves,
 				species: data?.species?.name,
+				typeData:types
 			};
 			setPokemonDetails(pokemonInfo);
 			setLoading(false);
@@ -75,9 +80,12 @@ function ModalContainer({
 					<div className="abilities-modal-content">
 						{pokemonInfo?.species && (
 							<>
-								<div className='special-species'>
+								<div >
 									<h1>SPECIES :</h1>
-									<span>{pokemonInfo.species}</span>
+									<ul>
+										<li>{pokemonInfo.species}</li>
+									
+								</ul>
 								</div>
 							</>
 						)}
@@ -100,6 +108,16 @@ function ModalContainer({
 								</ul>
 							</div>
 						)}
+						{Object.keys(pokemonInfo).includes('typeData') && (
+							<div>
+								<h1>TYPES</h1>
+								<ul>
+									{pokemonInfo.typeData?.map((dataItem: string, index) => {
+										return <li key={index}>{dataItem}</li>;
+									})}
+								</ul>
+							</div>
+						)}
 						{Object.keys(pokemonInfo).includes('movesData') && (
 							<div>
 								<h1>MOVES</h1>
@@ -110,6 +128,7 @@ function ModalContainer({
 								</ul>
 							</div>
 						)}
+						
 					</div>
 				</div>
 			</Modal>

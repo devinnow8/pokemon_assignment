@@ -5,6 +5,8 @@ interface Config {
 interface ApiUrl {
   FETCH_POKEMON: string;
   FETCH_POKEMON_EVOLUTION:String
+  FETCH_ABILITIES:String,
+  FETCH_POKEMONBY_ABILITIES:String
 }
 
 
@@ -12,7 +14,9 @@ interface ApiUrl {
 const CONFIG: Config = {
   API_URL: {
     FETCH_POKEMON: "/pokemon/",
-    FETCH_POKEMON_EVOLUTION:"/evolution-chain/"
+    FETCH_POKEMON_EVOLUTION:"/evolution-chain/",
+    FETCH_ABILITIES:"/ability",
+    FETCH_POKEMONBY_ABILITIES:"/ability/"
   },
 };
 

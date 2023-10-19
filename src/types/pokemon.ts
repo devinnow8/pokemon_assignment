@@ -214,7 +214,7 @@ export interface List {
   order: number;
   past_types: any;
   species: SpeciesList;
-  sprites: PokemonSprites | [];
+  sprites: PokemonSprites ;
   stats: PokemonStats;
   types: PokemonTypes;
   weight: number;

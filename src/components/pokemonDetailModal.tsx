@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import customStyles from '../common/modalStyles.js';
 import { getURLRequests } from '../api/baseAPI';
 import { useState, useEffect } from 'react';
-import '../pages/homePage.scss';
+import '../styles/homePage.scss';
 import {
 	ChildComponentProps,
 	Ability,

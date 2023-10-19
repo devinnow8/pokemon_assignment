@@ -11,6 +11,13 @@ export interface FetchPokemonEvolutionArgs {
   id:  number;
 }
 
+export interface FetchPokemonByAbilityArgs {
+  queryParam: string;
+
+}
+
+
+
 export const fetchPokemon = createAsyncThunk(
   "pokemon/fetchPokemon",
   async ({ queryParam }: FetchPokemonArgs, { dispatch }) => {
@@ -48,4 +55,44 @@ export const fetchPokemonEvolution = createAsyncThunk(
   }
 );
 
+
+export const fetchAbilities = createAsyncThunk(
+  "pokemon/fetchAbilities",
+  async (payload:null, {dispatch} ) => {
+    const {
+      API_URL: { FETCH_ABILITIES },
+    } = CONFIG;
+
+    try {
+      dispatch(beginAPICall());
+      const { data } = await getRequest('https://pokeapi.co/api/v2/ability');
+      return data;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      dispatch(endAPICall());
+    }
+  }
+);
+
+export const fetchPokemonByAbility = createAsyncThunk(
+  "pokemon/fetchPokemonByAbility",
+  async ({ queryParam }: FetchPokemonByAbilityArgs, { dispatch }) => {
+    const {
+      API_URL: { FETCH_POKEMONBY_ABILITIES },
+    } = CONFIG;
+
+    try {
+      dispatch(beginAPICall());
+
+      const {data} = await getRequest(FETCH_POKEMONBY_ABILITIES + queryParam) as any;
+      console.log("datadata",data)
+      return data;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      dispatch(endAPICall());
+    }
+  }
+);
 

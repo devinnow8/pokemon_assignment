@@ -1,13 +1,15 @@
 import React, { useMemo, useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPokemon } from "../redux/asyncThunk/pokemon";
+import { fetchPokemon, fetchAbilities, fetchPokemonByAbility } from "../redux/asyncThunk/pokemon";
 import { pokemonDataSelector } from "../redux/selector/pokemon";
 import tag from "../assets/images/tag.png";
-import "./homePage.scss";
-import ModalContainer from "../components/pokemonDetailModal";
+import "../styles/homePage.scss";
+import ModalContainer from "src/components/pokemonDetailModal";
 import { List, PokemonSprites, PokemonAbilities } from "@/types/pokemon";
 import { loadingDataSelector } from "../redux/selector/loading";
 import EvolutionsModal from "../components/evolutionsModal";
+import Content from "src/components/content";
+import Dropdown from "src/common/dropdown";
 
 const HomePage = React.memo((props) => {
   const dispatch = useDispatch();
@@ -15,11 +17,15 @@ const HomePage = React.memo((props) => {
   const { list } = pokemonDataSelector(useSelector);
   const { loading } = loadingDataSelector(useSelector);
   const [search, setSearch] = useState("");
-  const [evolutionModal, setEvolutionModal] = useState<boolean>(false);
 
-  const [modal, setModal] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedOption, setSelectedOption] = useState<any>({});
+  
+  const [selectedAbility, setSelectedAbility] = useState<any>({});
+
+  const [abilities, setAbilities] = useState<any>([]);
+
   const [isError, setError] = useState<boolean>(false);
-  const [selectedPokemon, setSelectedPokemon] = useState<List>();
 
   const handleChange = ({
     target: { value },
@@ -27,170 +33,90 @@ const HomePage = React.memo((props) => {
     setSearch(value);
   };
 
-  const onEvolutionClick = (pokemonName: string) => {
-    setSearch(pokemonName);
-    handlePokemonSearch(pokemonName);
-    setEvolutionModal(false);
-  };
-
-  const handlePokemonSearch = async(pokemonName: string) => {
-    // async (pokemonName?: string) => {
-      let pokemonToSearch = pokemonName ? pokemonName : search;
-
-      const existItem = list?.find(
-        (item: List) =>
-          item?.name?.toLowerCase() === pokemonToSearch?.toLowerCase()
+  const setSelectedSearchOption = async(option:any) => {
+    setSelectedOption(option);
+    console.log("optionoption",option)
+    if(option.name === 'Search by ability'){
+      const result = await dispatch(
+        fetchAbilities(null) as any
       );
-      console.log("existItemexistItem",list,pokemonToSearch,existItem)
-      if (existItem) {
-        alert(`This Pokemon ${pokemonToSearch} is already in the list!`);
-      } else {
-        setSearch("");
-        if (pokemonToSearch) {
-          const result = await dispatch(
-            fetchPokemon({ queryParam: pokemonToSearch.toLowerCase() }) as any
-          );
-          if (!result.payload) {
-            setError(true);
-            setTimeout(() => {
-              setError(false);
-            }, 2000);
-          } else {
+      console.log("resultresult",result)
+      setAbilities(result.payload.results)
+    }
+  }
+
+  const setAbility=async(ability :any)=>{
+    console.log("setSelectedAbility")
+    setSelectedAbility(ability);
+    const result = await dispatch(
+      fetchPokemonByAbility({ queryParam: ability.name.toLowerCase() }) as any
+    );
+    console.log("fetchPokemonByAbility",result)
+  }
+
+  const handlePokemonSearch = async (pokemonName: string) => {
+    // async (pokemonName?: string) => {
+    let pokemonToSearch = pokemonName ? pokemonName : search;
+
+    const existItem = list?.find(
+      (item: List) =>
+        item?.name?.toLowerCase() === pokemonToSearch?.toLowerCase()
+    );
+    console.log("existItemexistItem", list, pokemonToSearch, existItem);
+    if (existItem) {
+      alert(`This Pokemon ${pokemonToSearch} is already in the list!`);
+    } else {
+      setSearch("");
+      if (pokemonToSearch) {
+        const result = await dispatch(
+          fetchPokemon({ queryParam: pokemonToSearch.toLowerCase() }) as any
+        );
+        if (!result.payload) {
+          setError(true);
+          setTimeout(() => {
             setError(false);
-          }
+          }, 2000);
+        } else {
+          setError(false);
         }
       }
     }
-    // [search, dispatch]
-
-
-  const handleModal = (data: List) => {
-    setModal(!modal);
-    setSelectedPokemon(data);
   };
-
-  const setEvolutionModalState = useCallback(
-    (e: any, value: boolean, data: List) => {
-      e.stopPropagation();
-      setSelectedPokemon(data);
-      setModal(false);
-      setEvolutionModal(value);
-    },
-    []
-  );
-
-
-  const renderCard = (index: any) => {
-    let source = "";
-    const name = list[index].name;
-
-    let sprites = list[index].sprites;
-    source = sprites["front_default"];
-
-    return (
-      <div
-        className="card"
-        key={source + name}
-        onClick={() => handleModal(list[index])}
-      >
-        <h3>{name}</h3> <img src={source} alt="pokemon" />
-        <div key={index}>
-          {index === 0 && (
-            <div className="image-container">
-              <img src={tag} />
-              <span>New</span>
-            </div>
-          )}
-        </div>
-        <button
-          className="evolution-btn"
-          onClick={(e) => setEvolutionModalState(e, true, list[index])}
-        >
-          Evolutions{" "}
-        </button>
-      </div>
-    );
-  };
+  // [search, dispatch]
 
   return (
     <div className="main-container">
       <div className="header">
-        <div className="header-content">
-          <input
-            value={search}
-            onChange={(e) => handleChange(e)}
-            placeholder={loading ? "Loading..." : "Search"}
-          />
-          <button onClick={() => handlePokemonSearch(search)} disabled={!search}>
-            Search
-          </button>
-        </div>
+      <Dropdown options={[{name:"Search by name", value:0},{name:"Search by ability", value:1}]} selectedOption ={selectedOption} setSelectedOption = {setSelectedSearchOption} />
+        {selectedOption.name === 'Search by name' ?    <div className="header-content">
+            <>
+              <input
+                value={search}
+                onChange={(e) => handleChange(e)}
+                placeholder={loading ? "Loading..." : "Search"}
+              />
+              <button
+                onClick={() => handlePokemonSearch(search)}
+                disabled={!search}
+              >
+                Search
+              </button>
+            </>
+          
+          
+        </div> : <Dropdown options={abilities} selectedOption ={selectedAbility}  setSelectedOption = {setAbility}/>
+}
         {isError && (
           <div className="no-result">
-            <p>Sorry, no results found! </p>
+            <p>Sorry, no pokemon matched your result! </p>
           </div>
         )}{" "}
       </div>
-      {!list.length ? (
-        <div className="no-data">
-          <h2> No Data</h2>
-        </div>
-      ) : (
-        <div className="content">
-          <h2>recently viewed</h2>
-          {list?.length > 0 && (
-            <div className="recently-viewed">{renderCard(0)}</div>
-          )}
-          <div className="other-cards">
-            {list?.length > 1 && (
-              <>
-                <h2>Searched history</h2>
-                {list?.map(
-                  (
-                    {
-                      name = "",
-                      sprites,
-                      abilities,
-                    }: {
-                      name: string;
-                      sprites: PokemonSprites;
-                      abilities: PokemonAbilities;
-                    },
-                    index: number
-                  ) => {
-                    let src = Object.values(sprites).find(
-                      (value: PokemonSprites) => value
-                    ) as string;
-
-                    return <>{index !== 0 && renderCard(index)}</>;
-                  }
-                )}
-              </>
-            )}
-            {selectedPokemon &&
-              Object.values(selectedPokemon).length &&
-              modal && (
-                <>
-                  <ModalContainer
-                    modal={modal}
-                    setModal={setModal}
-                    data={selectedPokemon}
-                  />
-                </>
-              )}
-            {selectedPokemon &&
-              Object.keys(selectedPokemon).length > 0 &&
-              evolutionModal && (
-                <EvolutionsModal
-                  evolutionModal={evolutionModal}
-                  selectedPokemon={selectedPokemon}
-                  setEvolutionModal={setEvolutionModalState}
-                  onEvolutionClick={onEvolutionClick}
-                />
-              )}
-          </div>
-        </div>
-      )}
+      <Content
+        list={list}
+        setSearch={setSearch}
+        handlePokemonSearch={handlePokemonSearch}
+      />
     </div>
   );
 });

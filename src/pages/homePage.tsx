@@ -8,6 +8,7 @@ import ModalContainer from "../components/pokemonDetailModal";
 import { List, PokemonSprites, PokemonAbilities } from "@/types/pokemon";
 import { loadingDataSelector } from "../redux/selector/loading";
 import EvolutionsModal from "../components/evolutionsModal";
+import Content from "src/components/content";
 
 const HomePage = React.memo((props) => {
   const dispatch = useDispatch();
@@ -127,70 +128,15 @@ const HomePage = React.memo((props) => {
         </div>
         {isError && (
           <div className="no-result">
-            <p>Sorry, no results found! </p>
+            <p>Sorry, no pokemon matched your result! </p>
           </div>
         )}{" "}
       </div>
-      {!list.length ? (
-        <div className="no-data">
-          <h2> No Data</h2>
-        </div>
-      ) : (
-        <div className="content">
-          <h2>recently viewed</h2>
-          {list?.length > 0 && (
-            <div className="recently-viewed">{renderCard(0)}</div>
-          )}
-          <div className="other-cards">
-            {list?.length > 1 && (
-              <>
-                <h2>Searched history</h2>
-                {list?.map(
-                  (
-                    {
-                      name = "",
-                      sprites,
-                      abilities,
-                    }: {
-                      name: string;
-                      sprites: PokemonSprites;
-                      abilities: PokemonAbilities;
-                    },
-                    index: number
-                  ) => {
-                    let src = Object.values(sprites).find(
-                      (value: PokemonSprites) => value
-                    ) as string;
-
-                    return <>{index !== 0 && renderCard(index)}</>;
-                  }
-                )}
-              </>
-            )}
-            {selectedPokemon &&
-              Object.values(selectedPokemon).length &&
-              modal && (
-                <>
-                  <ModalContainer
-                    modal={modal}
-                    setModal={setModal}
-                    data={selectedPokemon}
-                  />
-                </>
-              )}
-            {selectedPokemon &&
-              Object.keys(selectedPokemon).length > 0 &&
-              evolutionModal && (
-                <EvolutionsModal
-                  evolutionModal={evolutionModal}
-                  selectedPokemon={selectedPokemon}
-                  setEvolutionModal={setEvolutionModalState}
-                  onEvolutionClick={onEvolutionClick}
-                />
-              )}
-          </div>
-        </div>
-      )}
+      <Content
+        list={list}
+        setSearch={setSearch}
+        handlePokemonSearch={handlePokemonSearch}
+      />
     </div>
   );
 });
